@@ -1,3 +1,4 @@
+import json
 import boto3
 import io
 
@@ -41,18 +42,24 @@ class LambdaFunction():
         print("\n    [INFO] Function ARN Response: \n")
         print("\n           > " + lambda_response["FunctionArn"])
 
-    def check_function(self, function_name: str):
+    def check_function(self, function_name: str, input: dict = None):
 
         try:
-            response = self.lambda_client.invoke( FunctionName=function_name,
-                                                  InvocationType="RequestResponse",
-                                                )
+            if(not input):
+                response = self.lambda_client.invoke( FunctionName=function_name,
+                                                    InvocationType="RequestResponse",
+                                                    )
+            else:
+                response = self.lambda_client.invoke( FunctionName=function_name,
+                                                      InvocationType="RequestResponse",
+                                                      Payload=json.dumps(input)
+                                                    )
                                                 
             payload = response["Payload"]
 
             txt = io.BytesIO(payload.read()).read().decode("utf-8")
 
-            print(f"\n    [INFO] Invoke Function {function_name}() \n")
+            print(f"\n    [INFO] Invoke Function {function_name}(input = {input}) \n")
             print("\n           > Response :" + txt)
 
         except Exception as e:
