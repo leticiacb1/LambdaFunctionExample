@@ -1,4 +1,5 @@
-import typing 
+import json
+import typing
 
 def count_words(event, context) -> typing.Dict[str, str]:
     '''
@@ -20,9 +21,21 @@ def count_words(event, context) -> typing.Dict[str, str]:
     print(event)
 
     if not isinstance(event, dict):
-        raise ValueError("Event must be a dictionary. In this format : {'sentence' : ' something here'}")
-    
-    sentence = event.get("sentence")
+        raise ValueError("Event must be a dictionary.")
+
+    body = event.get("body")
+    if not body:
+        return {
+            "Error": "Invalid input: no body found."
+        }
+
+    try:
+        json_body = json.loads(body)
+    except json.JSONDecodeError:
+        return {
+            "Error": "Invalid input: unable to parse JSON body."
+        }
+    sentence = json_body.get("sentence")
     
     if not isinstance(sentence, str):
         return {
@@ -30,7 +43,6 @@ def count_words(event, context) -> typing.Dict[str, str]:
         }
 
     count = len(sentence.split())
-
     return {
         "Sentence": sentence,
         "Count": count

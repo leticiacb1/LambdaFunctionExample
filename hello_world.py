@@ -2,6 +2,7 @@ from dataclass.compress import CompressFile
 from dataclass.lambda_function import LambdaFunction
 from dataclass.gateway import Gateway
 import time
+import requests
 
 # Variaveis
 lambda_filename = "hello.py"
@@ -35,5 +36,11 @@ deploy.see_all_lambda_functions()
 gateway = Gateway()
 gateway.create_client()
 gateway.get_lambda_function(function_name=function_name)
-gateway.create_api(api_name= api_gateway_name, function_name=function_name)
+gateway.create_api(api_name= api_gateway_name)
+gateway.set_permissions(function_name=function_name)
 gateway.see_all_gateways()
+
+# Test the API response
+print(f"\n    [INFO] Test API.\n")
+api_response = requests.post(gateway.endpoint)
+print(api_response.json())
