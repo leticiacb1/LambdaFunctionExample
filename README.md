@@ -1,4 +1,4 @@
-### ☁️  Function as a Service (AWS Lambda Function)
+### 🪅 Function as a Service (AWS Lambda Function)
 
 **Function as a Service (FaaS)** refers to a cloud computing model that allows developers to build and run applications and functions without having to worry about infrastructure management.
 
@@ -15,7 +15,7 @@ This will be the schematic drawing:
     |________|          |_____________|         |__________|
 ```
 
-#### Run the project
+#### 📌 Run the project
 
 Create a `venv` and install dependencies:
 
